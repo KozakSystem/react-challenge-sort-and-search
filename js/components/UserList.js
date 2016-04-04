@@ -1,44 +1,18 @@
 import React, {Component} from 'react';
 import UserData from './UserData';
-//import Data from '../../public/data.json';
 
 export default class UserList extends Component {
-  constructor(props) {
-    super(props);
+  renderUserData() {
+    const self = this;
 
-    this.state = {
-    	users: []
-    }   
-  }
-
-  componentDidMount() {
-  	this.loadUserList();
-  }
-
-  loadUserList() {
-  	$.ajax({
-      url: '/data.json',
-      dataType: 'json',
-      cache: false,
-      success: function(data) {
-        this.setState({users: data});
-        this.props.defaultUser(this.state.users[0]);
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
+    return _.map(this.props.users, function(user) {
+        return ( <UserData key = { user.id } user = { user } />);
     });
   }
 
-  renderUserData() {
-	const self = this;
-
-  	return _.map(this.state.users, function(user) {
-		return(<UserData key={user.id} user={user} selectUser={self.props.selectUser}/>);
-  	});
-  }
-
   render() {
+    let users_list = this.props.users;
+
     return (
       <table className="user-list table table-striped">
       	<thead>
@@ -50,7 +24,7 @@ export default class UserList extends Component {
       		</tr>
       	</thead>
       	<tbody>
-			{this.renderUserData.call(this)}
+			   { users_list && users_list.length > 0 ? this.renderUserData() : ''}
       	</tbody>
 	  </table>
     );

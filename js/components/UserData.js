@@ -1,28 +1,25 @@
 import React, {Component} from 'react';
 
 export default class UserData extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-    	user: this.props.user
-    }
-  }
 
   clickHandler() {
-	this.props.selectUser(this.state.user)
+    this.context.activeUser(this.props.user.id);
   }
 
   render() {
     return (
       <tr onClick={this.clickHandler.bind(this)}>
       	<td>
-      		<img src={'/images/' + this.state.user.image + '.svg'} className="user-image"/>
+      		<img src={'/images/' + this.props.user.image + '.svg'} className="user-image"/>
       	</td>
-      	<td>{this.state.user.name}</td>
-      	<td>{this.state.user.age}</td>
-      	<td>{this.state.user.phone}</td>
+      	<td>{this.props.user.name}</td>
+      	<td>{this.props.user.age}</td>
+      	<td>{this.props.user.phone}</td>
       </tr>
     );
   }
+}
+
+UserData.contextTypes = {
+   activeUser: React.PropTypes.func
 }
